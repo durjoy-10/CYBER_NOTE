@@ -3140,44 +3140,121 @@ hydra -L db_admins.txt -P sql_pass.txt -e n -t 3 -vV mysql://172.16.6.128 -s 330
 
 
 
-# Crack ZIP Passwords with John the Ripper (Kali Linux)
+# John the Ripper Password Cracking Cheat Sheet
 
-## 1. Create a Password-Protected ZIP File
-```bash
-zip -e p.zip file.txt  # -e = encrypt, p.zip = output, file.txt = file to zip  
-# (Enter a password when prompted.)
+## 1. Cracking Linux (/etc/shadow) Passwords
+
+### Extract hashes:
+```sh
+sudo unshadow /etc/passwd /etc/shadow > linux_hashes.txt
 ```
 
-## 2. Extract the Hash for Cracking
-```bash
-zip2john p.zip > hash.txt  # Saves the hash in hash.txt  
+### Crack SHA-512 hashes:
+```sh
+john --format=sha512crypt --wordlist=/usr/share/wordlists/rockyou.txt linux_hashes.txt
 ```
 
-## 3. Crack the Password
-
-### First Try (Default Attack)
-```bash
-john hash.txt  
-# If successful, the password is displayed.
-# But if I use it second time then password is not shown.
+### View results:
+```sh
+john --show linux_hashes.txt
 ```
 
-### Show Password Again
-```bash
-john hash.txt --wordlist="/usr/share/wordlist"
-```
-```bash
-john --show hash.txt  #Now it shows the password of the zip file again
-```
+## 2. Cracking Windows (NTLM) Passwords
 
-
-## 4. Unzip the File
-```bash
-unzip p.zip  # Enter the cracked password  
+### Example hash file (nt_hashes.txt):
+```
+Administrator:500:AAD3B...:31D6CFE0D16AE931B73C59D7E0C089C0:::
 ```
 
-## Summary
-- `zip -e` → Create encrypted ZIP.
-- `zip2john` → Extract hash.
-- `john` → Crack password (default/wordlist).
-- `unzip` → Open the file.
+### Crack command:
+```sh
+john --format=nt --wordlist=rockyou.txt nt_hashes.txt
+```
+
+### Show cracked passwords:
+```sh
+john --show --format=nt nt_hashes.txt
+```
+
+## 3. Cracking ZIP Archives
+
+### Extract hash:
+```sh
+zip2john file.zip > zip_hash.txt
+```
+
+### Crack password:
+```sh
+john --wordlist=rockyou.txt zip_hash.txt
+```
+
+### View results:
+```sh
+john --show zip_hash.txt
+```
+
+## 4. Cracking RAR Archives
+
+### Extract hash:
+```sh
+rar2john file.rar > rar_hash.txt
+```
+
+### Crack password:
+```sh
+john --wordlist=rockyou.txt rar_hash.txt
+```
+
+### View results:
+```sh
+john --show rar_hash.txt
+```
+
+## 5. Cracking SSH Private Keys
+
+### Extract hash:
+```sh
+ssh2john id_rsa > ssh_hash.txt
+```
+
+### Crack passphrase:
+```sh
+john --wordlist=rockyou.txt ssh_hash.txt
+```
+
+### View results:
+```sh
+john --show ssh_hash.txt
+```
+
+## Advanced Techniques
+
+### Use mutation rules:
+```sh
+john --wordlist=rockyou.txt --rules nt_hashes.txt
+```
+
+### Brute-force attack:
+```sh
+john --incremental=Alnum target_hashes.txt
+```
+
+### Multi-core processing:
+```sh
+john --fork=4 target_hashes.txt
+```
+
+### Resume interrupted session:
+```sh
+john --restore=last_session
+```
+
+## Common Commands Reference
+
+| Task | Command |
+|------|---------|
+| Linux hashes | `john --format=sha512crypt --wordlist=rockyou.txt hashes.txt` |
+| Windows NTLM | `john --format=nt --wordlist=rockyou.txt nt_hashes.txt` |
+| ZIP files | `zip2john file.zip > zip_hash.txt && john --wordlist=rockyou.txt zip_hash.txt` |
+| RAR files | `rar2john file.rar > rar_hash.txt && john --wordlist=rockyou.txt rar_hash.txt` |
+| SSH keys | `ssh2john id_rsa > ssh_hash.txt && john --wordlist=rockyou.txt ssh_hash.txt` |
