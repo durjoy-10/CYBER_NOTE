@@ -1,4 +1,4 @@
-                                                # CYBER_NOTE
+                                                       **CYBER_NOTE**
 # Linux Terminal Shortcuts
 
 - **Open Terminal** → `Ctrl + Alt + T`  
