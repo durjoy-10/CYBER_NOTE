@@ -3776,4 +3776,36 @@ ls
 
 ---
 
+# For Windows
+
+## Malware Creation: 
+![image](https://github.com/user-attachments/assets/ae03f860-faa7-4526-967e-4d997ff77501)
+
+## Listener Setup
+![image](https://github.com/user-attachments/assets/329a7bd8-3e69-4020-b242-faf4a184d4e7)
+
+
+
+# How Malware Spreads :
+-  **Spam mail**
+-  **Storage Media**
+-  **Internet**
+-  **Hacked or Compromized Web Pages**
+-  **Social Network**
+-  **Outdated Software**
+-  **Mobile Devices**
+-  **Rogue Software**
+
+
+# How Prevent: 
+-  **Windows Defender**
+-  **Updated Software**
+-  **Firewall**
+-  **Safe Browsing**
+-  **Strong Password**
+-  **Backup data regularly**
+
+# Malware Detection Tools:
+-  **Virustotal**
+-  **Hybrid Analysis**
 
