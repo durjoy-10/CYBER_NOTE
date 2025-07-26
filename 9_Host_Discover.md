@@ -34,3 +34,10 @@
 - **Linux:** Use **NBTSCAN** to get results similar to Advanced IP Scanner.  
   **Command:** `nbtscan <network>`  
   ✅ **Example:** `nbtscan 172.16.6.128/16`
+
+
+## Summary: 
+<img width="1570" height="741" alt="image" src="https://github.com/user-attachments/assets/159964c4-bc45-468f-bbf4-9e90761fdf64" />
+<img width="1570" height="399" alt="image" src="https://github.com/user-attachments/assets/bb427360-c312-415b-bb00-2e1bf912f5a7" />
+
+
